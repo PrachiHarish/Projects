@@ -1,0 +1,499 @@
+from tkinter import*
+from tkinter import ttk
+import random
+import time
+import datetime
+from tkinter import messagebox
+import mysql.connector
+
+
+class student:
+    def __init__(self,root):
+        self.root=root
+        self.root.title("RUAS STUDENT MANAGEMENT SYSTEM")
+        self.root.geometry("1540x1000+0+0")
+
+        self.SID=IntVar()
+        self.FirstName=StringVar()
+        self.LastName=StringVar()
+        self.DoB=StringVar()
+        self.Gender=StringVar()
+        self.PhoneNo=IntVar()
+        self.Address=StringVar()
+        self.CourseID=StringVar()
+        self.CourseName=StringVar()
+        self.BranchID=StringVar()
+        self.BranchName=StringVar()
+        self.Semester=IntVar()
+        self.PromotionStatus=StringVar()
+        self.TransactionID=StringVar()
+        self.PaymentStatus=StringVar()
+        self.AmountPaid=IntVar()
+        self.Modeofpayment=StringVar()
+        self.Modify=StringVar()
+
+        lbltitle=Label(self.root,bd=20,relief=RIDGE,text="RUAS STUDENT MANAGEMENT SYSTEM",fg="brown",bg="white",font=("times new roman",50,"bold"))
+        lbltitle.pack(side=TOP,fill=X)
+
+
+
+        DataFrame=Frame(self.root,bd=20,relief=RIDGE)
+        DataFrame.place(x=0,y=130,width=1530,height=400)
+        
+
+        DataFrame1=LabelFrame(DataFrame,bd=10,padx=20,relief=RIDGE,font=("arial",12,"bold"),text="Student Details",fg="brown")
+        DataFrame1.place(x=0,y=5,width=400,height=350)
+
+        DataFrame2=LabelFrame(DataFrame,bd=10,padx=20,relief=RIDGE,font=("arial",12,"bold"),text="Course Details",fg="brown")
+        DataFrame2.place(x=401,y=5,width=400,height=150)
+
+        DataFrame3=LabelFrame(DataFrame,bd=10,padx=20,relief=RIDGE,font=("arial",12,"bold"),text="Branch Details",fg="brown")
+        DataFrame3.place(x=401,y=150,width=400,height=200)
+
+        DataFrame4=LabelFrame(DataFrame,bd=10,padx=20,relief=RIDGE,font=("arial",12,"bold"),text="Exam Result",fg="brown")
+        DataFrame4.place(x=802,y=5,width=400,height=150)
+
+        DataFrame5=LabelFrame(DataFrame,bd=10,padx=20,relief=RIDGE,font=("arial",12,"bold"),text="Fee Details",fg="brown")
+        DataFrame5.place(x=802,y=150,width=400,height=200)
+
+        DataFrame6=LabelFrame(DataFrame,bd=10,padx=20,relief=RIDGE,font=("arial",12,"bold"),text="Modification Details",fg="brown")
+        DataFrame6.place(x=1203,y=5,width=300,height=350)
+
+        ButtonFrame=Frame(self.root,bd=20,relief=RIDGE)
+        ButtonFrame.place(x=0,y=530,width=1530,height=70)
+
+        DetailsFrame=Frame(self.root,bd=20,relief=RIDGE)
+        DetailsFrame.place(x=0,y=600,width=1530,height=190)
+
+        lblSID=Label(DataFrame1,text="SID",font=("times new roman",12,"bold"),padx=2,pady=6)
+        lblSID.grid(row=0,column=0)
+        comSID=ttk.Combobox(DataFrame1,textvariable=self.SID,font=("times new roman",12,"bold"),width=25)
+        comSID.grid(row=0,column=1)
+
+        lblFirstName=Label(DataFrame1,text="First Name",font=("times new roman",12,"bold"),padx=2,pady=6)
+        lblFirstName.grid(row=1,column=0)
+        comFirstName=ttk.Combobox(DataFrame1,textvariable=self.FirstName,font=("times new roman",12,"bold"),width=25)
+        comFirstName.grid(row=1,column=1)
+
+        lblLastName=Label(DataFrame1,text="Last Name",font=("times new roman",12,"bold"),padx=2,pady=6)
+        lblLastName.grid(row=2,column=0)
+        comLastName=ttk.Combobox(DataFrame1,textvariable=self.LastName,font=("times new roman",12,"bold"),width=25)
+        comLastName.grid(row=2,column=1)
+
+        lblDoB=Label(DataFrame1,text="DoB",font=("times new roman",12,"bold"),padx=2,pady=6)
+        lblDoB.grid(row=3,column=0)
+        comDoB=ttk.Combobox(DataFrame1,textvariable=self.DoB,font=("times new roman",12,"bold"),width=25)
+        comDoB.grid(row=3,column=1)
+
+        lblGender=Label(DataFrame1,text="Gender",font=("times new roman",12,"bold"),padx=2,pady=6)
+        lblGender.grid(row=4,column=0)
+        comGender=ttk.Combobox(DataFrame1,textvariable=self.Gender,font=("times new roman",12,"bold"),width=25)
+        comGender["values"]=("Male","Female","Others")
+        comGender.grid(row=4,column=1)
+
+        lblPhoneNo=Label(DataFrame1,text="PhoneNo",font=("times new roman",12,"bold"),padx=2,pady=6)
+        lblPhoneNo.grid(row=5,column=0)
+        comPhoneNo=ttk.Combobox(DataFrame1,textvariable=self.PhoneNo,font=("times new roman",12,"bold"),width=25)
+        comPhoneNo.grid(row=5,column=1)
+
+        lblAddress=Label(DataFrame1,text="Address",font=("times new roman",12,"bold"),padx=2,pady=6)
+        lblAddress.grid(row=6,column=0)
+        comAddress=ttk.Combobox(DataFrame1,textvariable=self.Address,font=("times new roman",12,"bold"),width=25)
+        comAddress.grid(row=6,column=1)
+
+        lblCourseID=Label(DataFrame2,text="CourseID",font=("times new roman",12,"bold"),padx=2,pady=6)
+        lblCourseID.grid(row=0,column=0)
+        comCourseID=ttk.Combobox(DataFrame2,textvariable=self.CourseID,font=("times new roman",12,"bold"),width=25)
+        comCourseID["values"]=("C1","C2","C3")
+        comCourseID.grid(row=0,column=1)
+
+        lblCourseName=Label(DataFrame2,text="Course Name",font=("times new roman",12,"bold"),padx=2,pady=6)
+        lblCourseName.grid(row=1,column=0)
+        comCourseName=ttk.Combobox(DataFrame2,textvariable=self.CourseName,font=("times new roman",12,"bold"),width=25)
+        comCourseName["values"]=("DBS","ML","Neural Networks")
+        comCourseName.grid(row=1,column=1)
+
+        lblBranchID=Label(DataFrame3,text="BranchID",font=("times new roman",12,"bold"),padx=2,pady=6)
+        lblBranchID.grid(row=0,column=0)
+        comBranchID=ttk.Combobox(DataFrame3,textvariable=self.BranchID,font=("times new roman",12,"bold"),width=25)
+        comBranchID["values"]=("B1","B2","B3")
+        comBranchID.grid(row=0,column=1)
+
+        lblBranchName=Label(DataFrame3,text="Branch Name",font=("times new roman",12,"bold"),padx=2,pady=6)
+        lblBranchName.grid(row=1,column=0)
+        comBranchName=ttk.Combobox(DataFrame3,textvariable=self.BranchName,font=("times new roman",12,"bold"),width=25)
+        comBranchName["values"]=("CSE","EC","EEE")
+        comBranchName.grid(row=1,column=1)
+
+        lblSemester=Label(DataFrame4,text="Semester",font=("times new roman",12,"bold"),padx=2,pady=6)
+        lblSemester.grid(row=0,column=0)
+        comSemester=ttk.Combobox(DataFrame4,textvariable=self.Semester,font=("times new roman",12,"bold"),width=25)
+        comSemester["values"]=(1,2,3,4,5,6,7,8)
+        comSemester.grid(row=0,column=1)
+
+        lblPromotionStatus=Label(DataFrame4,text="Promotion Status",font=("times new roman",12,"bold"),padx=2,pady=6)
+        lblPromotionStatus.grid(row=1,column=0)
+        comPromotionStatus=ttk.Combobox(DataFrame4,textvariable=self.PromotionStatus,font=("times new roman",12,"bold"),width=25)
+        comPromotionStatus["values"]=("Pass","Fail")
+        comPromotionStatus.grid(row=1,column=1)
+
+        lblTransactionID=Label(DataFrame5,text="TransactionID",font=("times new roman",12,"bold"),padx=2,pady=6)
+        lblTransactionID.grid(row=0,column=0)
+        comTransactionID=ttk.Combobox(DataFrame5,textvariable=self.TransactionID,font=("times new roman",12,"bold"),width=15)
+        comTransactionID.grid(row=0,column=1)
+
+        lblPaymentStatus=Label(DataFrame5,text="Payment Status",font=("times new roman",12,"bold"),padx=2,pady=6)
+        lblPaymentStatus.grid(row=1,column=0)
+        comPaymentStatus=ttk.Combobox(DataFrame5,textvariable=self.PaymentStatus,font=("times new roman",12,"bold"),width=15)
+        comPaymentStatus["values"]=("Paid","Pending")
+        comPaymentStatus.grid(row=1,column=1)
+
+        lblAmountPaid=Label(DataFrame5,text="Amount Paid",font=("times new roman",12,"bold"),padx=2,pady=6)
+        lblAmountPaid.grid(row=2,column=0)
+        comAmountPaid=ttk.Combobox(DataFrame5,textvariable=self.AmountPaid,font=("times new roman",12,"bold"),width=15)
+        comAmountPaid.grid(row=2,column=1)
+
+        lblModeofPayment=Label(DataFrame5,text="Mode of Payment",font=("times new roman",12,"bold"),padx=2,pady=6)
+        lblModeofPayment.grid(row=3,column=0)
+        comModeofPayment=ttk.Combobox(DataFrame5,textvariable=self.Modeofpayment,font=("times new roman",12,"bold"),width=15)
+        comModeofPayment["values"]=("Card","Netbanking","UPI")
+        comModeofPayment.grid(row=3,column=1)
+
+        lblModify=Label(DataFrame6,text="Select column to modify",font=("times new roman",12,"bold"),padx=2,pady=6)
+        lblModify.grid(row=0,column=0)
+        comModify=ttk.Combobox(DataFrame6,textvariable=self.Modify,font=("times new roman",12,"bold"),width=15)
+        comModify["values"]=("Student","Course","Branch","Fee","Exam")
+        comModify.grid(row=1,column=0)
+
+        buttonCreate=Button(ButtonFrame,text="Create",command=self.add_data,bg="green",fg="white",font=("arial",12,"bold"),width=30)
+        buttonCreate.grid(row=0,column=0)
+
+        buttonRetrieve=Button(ButtonFrame,text="Read",command=self.fetch_data,bg="green",fg="white",font=("arial",12,"bold"),width=30)
+        buttonRetrieve.grid(row=0,column=1)
+
+        buttonUpdate=Button(ButtonFrame,text="Update",bg="green",command=self.update_data,fg="white",font=("arial",12,"bold"),width=30)
+        buttonUpdate.grid(row=0,column=2)
+
+        buttonDelete=Button(ButtonFrame,text="Delete",bg="green",command=self.delete_data,fg="white",font=("arial",12,"bold"),width=30)
+        buttonDelete.grid(row=0,column=3)
+
+        buttonReset=Button(ButtonFrame,text="Reset",bg="green",command=self.reset_data,fg="white",font=("arial",12,"bold"),width=30)
+        buttonReset.grid(row=0,column=4)
+
+        scroll_x=ttk.Scrollbar(DetailsFrame,orient=HORIZONTAL)
+        scroll_y=ttk.Scrollbar(DetailsFrame,orient=VERTICAL)
+        self.student_table=ttk.Treeview(DetailsFrame,column=("SID","FirstName","LastName","DoB","Gender","Address","PhoneNo","CourseID","CourseName","BranchID","BranchName","Semester","PromotionStatus","TransactionID","PaymentStatus","AmountPaid","ModeofPayment"),xscrollcommand=scroll_x.set,yscrollcommand=scroll_y.set)
+        
+
+        scroll_x.pack(side=BOTTOM,fill=X)
+        scroll_y.pack(side=RIGHT,fill=Y)
+
+        scroll_x=ttk.Scrollbar(command=self.student_table.xview)
+        scroll_y=ttk.Scrollbar(command=self.student_table.yview)
+
+        self.student_table.heading("SID",text="SID")
+        self.student_table.heading("FirstName",text="First Name")
+        self.student_table.heading("LastName",text="Last Name")
+        self.student_table.heading("DoB",text="DoB")
+        self.student_table.heading("Gender",text="Gender")
+        self.student_table.heading("Address",text="Address")
+        self.student_table.heading("PhoneNo",text="PhoneNo")
+        self.student_table.heading("CourseID",text="CourseID")
+        self.student_table.heading("CourseName",text="Course Name")
+        self.student_table.heading("BranchID",text="BranchID")
+        self.student_table.heading("BranchName",text="Branch Name")
+        self.student_table.heading("Semester",text="Semester")
+        self.student_table.heading("PromotionStatus",text="Promotion Status")
+        self.student_table.heading("TransactionID",text="TransactionID")
+        self.student_table.heading("PaymentStatus",text="Payment Status")
+        self.student_table.heading("AmountPaid",text="Amount Paid")
+        self.student_table.heading("ModeofPayment",text="Mode of Payment")
+
+        self.student_table["show"]="headings"
+
+        self.student_table.column("SID",width=75)
+        self.student_table.column("FirstName",width=75)
+        self.student_table.column("LastName",width=75)
+        self.student_table.column("DoB",width=75)
+        self.student_table.column("Gender",width=75)
+        self.student_table.column("Address",width=75)
+        self.student_table.column("PhoneNo",width=75)
+        self.student_table.column("CourseID",width=75)
+        self.student_table.column("CourseName",width=75)
+        self.student_table.column("BranchID",width=75)
+        self.student_table.column("BranchName",width=75)
+        self.student_table.column("Semester",width=75)
+        self.student_table.column("PromotionStatus",width=75)
+        self.student_table.column("TransactionID",width=75)
+        self.student_table.column("PaymentStatus",width=75)
+        self.student_table.column("AmountPaid",width=75)
+        self.student_table.column("ModeofPayment",width=70)
+
+        self.student_table.pack(fill=BOTH,expand=1)
+        self.student_table.bind("<ButtonRelease>",self.get_cursor)
+
+
+
+    def add_data(self):
+            try:
+                conn=mysql.connector.connect(host="localhost",username="root",password="Mysql$chi1",database="studentmanagementsystem")
+                my_cursor=conn.cursor()
+                if self.SID.get()!="" and self.FirstName.get()!="" and self.LastName.get()!="" and self.DoB.get() !="" and self.Gender.get()!="" and self.Address.get()!="" and self.PhoneNo.get()!="":
+                    my_cursor.execute("insert into STUDENT_DETAILS values(%s,%s,%s,%s,%s,%s,%s)",(
+                                                                                                                        self.SID.get(),
+                                                                                                                        self.FirstName.get(),
+                                                                                                                        self.LastName.get(),
+                                                                                                                        self.DoB.get(),
+                                                                                                                        self.Gender.get(),
+                                                                                                                        self.Address.get(),
+                                                                                                                        self.PhoneNo.get()))
+                if self.BranchID.get()!="" and self.BranchName.get()!="" and self.SID.get()!="":
+                    my_cursor.execute("insert into BRANCH_DETAILS values(%s,%s,%s)",(
+                                                                                                                        self.BranchID.get(),
+                                                                                                                        self.BranchName.get(),
+                                                                                                                        self.SID.get()
+                                                                                                                        ))
+                if self.CourseID.get()!="" and self.CourseName.get()!="" and self.SID.get()!="":
+                    my_cursor.execute("insert into COURSE_DETAILS values(%s,%s,%s)",(
+                                                                                                                        self.CourseID.get(),
+                                                                                                                        self.CourseName.get(),
+                                                                                                                        self.SID.get(),
+                                                                                                                        ))
+                if self.TransactionID.get()!="" and self.PaymentStatus.get()!="" and self.AmountPaid.get()!="" and self.Modeofpayment.get()!="" and self.SID.get()!="":
+                    my_cursor.execute("insert into FEE_DETAILS values(%s,%s,%s,%s,%s)",(
+                                                                                                                        self.TransactionID.get(),
+                                                                                                                        self.PaymentStatus.get(),
+                                                                                                                        self.AmountPaid.get(),
+                                                                                                                        self.Modeofpayment.get(),
+                                                                                                                        self.SID.get()
+                                                                                                                        ))
+                if self.Semester.get()!="" and self.PromotionStatus.get()!="" and self.SID.get()!="":
+                    my_cursor.execute("insert into EXAM_RESULT values(%s,%s,%s)",(
+                                                                                                                        self.Semester.get(),
+                                                                                                                        self.PromotionStatus.get(),
+                                                                                                                        self.SID.get(),
+                                                                                                                        ))
+                conn.commit()
+                conn.close()
+                messagebox.showinfo("Sucess","Details has been added",parent=self.root)
+            except Exception as es:
+                messagebox.showerror("Error",f"Due To:{str(es)}",parent=self.root)
+    
+    def fetch_data(self):
+        try:
+            conn=mysql.connector.connect(host="localhost",username="root",password="Mysql$chi1",database="studentmanagementsystem")
+            my_cursor=conn.cursor()
+            a=self.Modify.get()
+            if a=="Student" and self.SID.get()==0:
+                my_cursor.execute("select * from STUDENT_DETAILS")
+                data=my_cursor.fetchall()
+                if len(data)!=0:
+                    self.student_table.delete(*self.student_table.get_children())
+                    for i in data:
+                            self.student_table.insert("",END,values=i)
+                    conn.commit()
+                conn.close()
+            elif a=="Student" and self.SID.get()!=0:
+                my_cursor.execute("select * from STUDENT_DETAILS where SID=%s",(self.SID.get(),))
+                data=my_cursor.fetchall()
+                if len(data)!=0:
+                    self.student_table.delete(*self.student_table.get_children())
+                    for i in data:
+                            self.student_table.insert("",END,values=i)
+                    conn.commit()
+                conn.close()
+            elif a=="Course" and self.SID.get()==0:
+                my_cursor.execute("select * from COURSE_DETAILS")
+                data=my_cursor.fetchall()
+                if len(data)!=0:
+                    self.student_table.delete(*self.student_table.get_children())
+                    for CourseID,CourseName,SID in data:
+                        self.student_table.insert("",END,values=(SID,"","","","","","",CourseID,CourseName))
+                    conn.commit()
+                conn.close() 
+            elif a=="Course" and self.SID.get!="":
+                my_cursor.execute("select * from COURSE_DETAILS where SID=%s",(self.SID.get(),))
+                data=my_cursor.fetchall()
+                if len(data)!=0:
+                    self.student_table.delete(*self.student_table.get_children())
+                    for CourseID,CourseName,SID in data:
+                        self.student_table.insert("",END,values=(SID,"","","","","","",CourseID,CourseName))
+                    conn.commit()
+                conn.close()
+            elif a=="Branch" and self.SID!=0:
+                my_cursor.execute("select * from BRANCH_DETAILS")
+                data=my_cursor.fetchall()
+                if len(data)!=0:
+                    self.student_table.delete(*self.student_table.get_children())
+                    for BranchID,BranchName,SID in data:
+                        self.student_table.insert("",END,values=(SID,"","","","","","","","",BranchID,BranchName))
+                    conn.commit()
+                conn.close()      
+            elif a=="Branch" and self.SID.get()!="":
+                my_cursor.execute("select * from BRANCH_DETAILS where SID=%s",(self.SID.get(),))
+                data=my_cursor.fetchall()
+                if len(data)!=0:
+                    self.student_table.delete(*self.student_table.get_children())
+                    for BranchID,BranchName,SID in data:
+                        self.student_table.insert("",END,values=(SID,"","","","","","","","",BranchID,BranchName))
+                    conn.commit()
+                conn.close()       
+            elif a=="Fee" and self.SID.get()==0:
+                my_cursor.execute("select * from FEE_DETAILS")
+                data=my_cursor.fetchall()
+                if len(data)!=0:
+                    self.student_table.delete(*self.student_table.get_children())
+                    for TransactionID,PaymentStatus,AmountPaid,ModeofPayment,SID in data:
+                        self.student_table.insert("",END,values=(SID,"","","","","","","","","","","","",TransactionID,PaymentStatus,AmountPaid,ModeofPayment))
+                    conn.commit()
+                conn.close()      
+            elif a=="Fee" and self.SID.get()!=0:
+                my_cursor.execute("select * from FEE_DETAILS where SID=%s",(self.SID.get(),))
+                data=my_cursor.fetchall()
+                if len(data)!=0:
+                    self.student_table.delete(*self.student_table.get_children())
+                    for TransactionID,PaymentStatus,AmountPaid,ModeofPayment,SID  in data:
+                        self.student_table.insert("",END,values=(SID,"","","","","","","","","","","","",TransactionID,PaymentStatus,AmountPaid,ModeofPayment))
+                    conn.commit()
+                conn.close()  
+            elif a=="Exam" and self.SID.get()==0:
+                my_cursor.execute("select * from EXAM_RESULT")
+                data=my_cursor.fetchall()
+                if len(data)!=0:
+                    self.student_table.delete(*self.student_table.get_children())
+                    for Semester,PromotionStatus,SID in data:
+                        self.student_table.insert("",END,values=(SID,"","","","","","","","","","",Semester,PromotionStatus))
+                    conn.commit()
+                conn.close()      
+            elif a=="Exam" and self.SID.get()!=0:
+                my_cursor.execute("select * from EXAM_RESULT where SID=%s",(self.SID.get(),))
+                data=my_cursor.fetchall()
+                if len(data)!=0:
+                    self.student_table.delete(*self.student_table.get_children())
+                    for Semester,PromotionStatus,SID in data:
+                        self.student_table.insert("",END,values=(SID,"","","","","","","","","","",Semester,PromotionStatus))
+                    conn.commit()
+                conn.close()    
+            messagebox.showinfo("Sucess","Details displayed",parent=self.root)
+        except Exception as es:
+            messagebox.showerror("Error",f"Due To:{str(es)}",parent=self.root)
+    def update_data(self):
+        try:
+            conn=mysql.connector.connect(host="localhost",username="root",password="Mysql$chi1",database="studentmanagementsystem")
+            my_cursor=conn.cursor()
+            a=self.Modify.get()
+            if a=="Student":
+                my_cursor.execute("update STUDENT_DETAILS set FirstName=%s,LastName=%s,DoB=%s,Gender=%s,Address=%s,PhoneNo=%s where SID=%s",(
+                                                                                                                                             self.FirstName.get(),
+                                                                                                                                             self.LastName.get(),
+                                                                                                                                             self.DoB.get(),
+                                                                                                                                             self.Gender.get(),
+                                                                                                                                             self.Address.get(),
+                                                                                                                                             self.PhoneNo.get(),
+                                                                                                                                             self.SID.get()))
+            elif a=="Course":
+                my_cursor.execute("update COURSE_DETAILS set CID=%s,CourseName=%s where SID=%s",(
+                                                                                                                                             self.CourseID.get(),
+                                                                                                                                             self.CourseName.get(),
+                                                                                                                                             self.SID.get()))
+            elif a=="Branch":
+                my_cursor.execute("update BRANCH_DETAILS set BID=%s,BranchName=%s where SID=%s",(
+                                                                                                                                             self.BranchID.get(),
+                                                                                                                                             self.BranchName.get(),
+                                                                                                                                             self.SID.get()))
+            elif a=="Fee":
+                my_cursor.execute("update FEE_DETAILS set TID=%s,PaymentStatus=%s,AmountPaid=%s,ModeofPayment=%s where SID=%s",(
+                                                                                                                                             self.TransactionID.get(),
+                                                                                                                                             self.PaymentStatus.get(),
+                                                                                                                                             self.AmountPaid.get(),
+                                                                                                                                             self.Modeofpayment.get(),
+                                                                                                                                             self.SID.get()))
+            elif a=="Exam":
+                my_cursor.execute("update EXAM_RESULT set Semester=%s,PromotionStatus=%s where SID=%s",(
+                                                                                                                                             self.Semester.get(),
+                                                                                                                                             self.PromotionStatus.get(),
+                                                                                                                                             self.SID.get()))
+            conn.commit()
+            conn.close()    
+            messagebox.showinfo("Sucess","Details upadted",parent=self.root)
+        except Exception as es:
+            messagebox.showerror("Error",f"Due To:{str(es)}",parent=self.root)
+    
+    def get_cursor(self,event=""):
+        cursor_row=self.student_table.focus()
+        content=self.student_table.item(cursor_row)
+        data=content["values"]
+        a=self.Modify.get()
+        if a=="Student":
+            self.SID.set(data[0])
+            self.FirstName.set(data[1])
+            self.LastName.set(data[2])
+            self.DoB.set(data[3])
+            self.Gender.set(data[4])
+            self.Address.set(data[5])
+            self.PhoneNo.set(data[6])
+        if a=="Course":
+            self.CourseID.set(data[7])
+            self.CourseName.set(data[8])
+            self.SID.set(data[0])
+        if a=="Branch":
+            self.BranchID.set(data[9])
+            self.BranchName.set(data[10])
+            self.SID.set(data[0])
+        if a=="Fee":
+            self.TransactionID.set(data[13])
+            self.PaymentStatus.set(data[14])
+            self.AmountPaid.set(data[15])
+            self.Modeofpayment.set(data[16])
+            self.SID.set(data[0])
+        if a=="Exam":
+            self.Semester.set(data[11])
+            self.PromotionStatus.set(data[12])
+            self.SID.set(data[0])
+    def delete_data(self):
+        try:
+            conn=mysql.connector.connect(host="localhost",username="root",password="Mysql$chi1",database="studentmanagementsystem")
+            my_cursor=conn.cursor()
+            a=self.Modify.get()
+            if a=="Student":
+                my_cursor.execute("delete from STUDENT_DETAILS where SID=%s",(self.SID.get(),))
+            elif a=="Course":
+                my_cursor.execute("delete from COURSE_DETAILS where SID=%s and CID=%s",(self.SID.get(),self.CourseID.get()))
+            elif a=="Branch":
+                my_cursor.execute("delete from BRANCH_DETAILS where SID=%s and BID=%s",(self.SID.get(),self.BranchID.get()))
+            elif a=="Fee":
+                my_cursor.execute("delete from FEE_DETAILS where TID=%s",(self.TransactionID.get(),))
+            elif a=="Exam":
+                my_cursor.execute("delete from EXAM_RESULT where SID=%s and Semester=%s",(self.SID.get(),self.Semester.get()))
+
+            conn.commit()
+            conn.close()    
+            messagebox.showinfo("Sucess","Details deleted",parent=self.root)
+        except Exception as es:
+            messagebox.showerror("Error",f"Due To:{str(es)}",parent=self.root)
+    
+    def reset_data(self):
+            self.SID.set(0)
+            self.FirstName.set("")
+            self.LastName.set("")
+            self.DoB.set("")
+            self.Gender.set("")
+            self.Address.set("")
+            self.PhoneNo.set(0)
+            self.CourseID.set("")
+            self.CourseName.set("")
+            self.BranchID.set("")
+            self.BranchName.set("")
+            self.TransactionID.set("")
+            self.PaymentStatus.set("")
+            self.AmountPaid.set("")
+            self.Modeofpayment.set("")
+            self.Semester.set(0)
+            self.PromotionStatus.set("")
+            self.student_table.delete(*self.student_table.get_children())
+
+root=Tk()
+ob=student(root)
+root.mainloop()
+
+
